@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TranslatorModelStoreContainer" CdmEntityContainer="TranslatorEntities">
+    <EntitySetMapping Name="tblCustomers">
+      <EntityTypeMapping TypeName="TranslatorModel.tblCustomer">
+        <MappingFragment StoreEntitySet="tblCustomers">
+          <ScalarProperty Name="ResetPassworCode" ColumnName="ResetPassworCode" />
+          <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+          <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Mothertounge" ColumnName="Mothertounge" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
