@@ -221,6 +221,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Crypto.cs" />
+    <Compile Include="Models\Dp.cs" />
     <Compile Include="Models\EmailValidator.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Login.cs" />
@@ -318,6 +319,7 @@
     <Content Include="Views\Register\ForgotPassword.cshtml" />
     <Content Include="Views\Register\ResetPassword.cshtml" />
     <Content Include="Views\Register\ResetPassword_Get.cshtml" />
+    <Content Include="Views\Home\AddPic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

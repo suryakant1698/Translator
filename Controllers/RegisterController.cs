@@ -44,7 +44,7 @@ namespace WebApplication4.Controllrs
                         Response.Cookies.Add(cookie);
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
-                            return Redirect(ReturnUrl);
+                            return Redirect(ReturnUrl);    
                         }
                         else return RedirectToAction("Login", "Register");
                     }
@@ -159,6 +159,7 @@ namespace WebApplication4.Controllrs
                     db.Configuration.ValidateOnSaveEnabled = false;
 
                     db.SaveChanges();
+                    ViewBag.Message = "Forgot Password link has been sent to your provided email address if registered";
                 }
                 else status = true;
             }
@@ -184,14 +185,12 @@ namespace WebApplication4.Controllrs
                 subject = "Your account is succesfuly created ";
                 body = "<br/> <br/> This is to inform you that your translator account has been created succesfully.Click on the below link to verify your account" +
                     "<a href='" + link + "'>Click here to activate</a>";
-
-
             }
             else
             {
                 subject = "Reset Password";
                 body = "We got request for reset your account passeord.Please click on the below link to reset password for your translator account"
-                    + "<br/><br/><a href='" + link + "'>Click here</a>";
+                    + "<br/> <br/> <a href="+link+">Click here to activate Now bitch</a>";
             }
             var smtp = new SmtpClient
             {

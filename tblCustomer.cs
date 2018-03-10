@@ -22,5 +22,7 @@ namespace WebApplication4
         public Nullable<bool> isEmailVerified { get; set; }
         public Nullable<System.Guid> ActivationCode { get; set; }
         public string ResetPassworCode { get; set; }
+        public Nullable<int> ImageId { get; set; }
+        public byte[] ImageData { get; set; }
     }
 }

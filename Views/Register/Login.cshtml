@@ -55,13 +55,15 @@
 <div>
     @Html.ActionLink("Forgot Passsword","ForgotPassword","Register")
 </div>
-<div class="alert alert-danger">
+
     @if (ViewBag.Message != null)
     {
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-       <strong>Error!</strong> @Convert.ToString(ViewBag.Message)
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> @Convert.ToString(ViewBag.Message)
+        </div>
     }
-</div>
+        
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -12,6 +12,8 @@
     <Property Name="isEmailVerified" Type="Boolean" />
     <Property Name="ActivationCode" Type="Guid" />
     <Property Name="ResetPassworCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ImageId" Type="Int32" />
+    <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityContainer Name="TranslatorEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="tblCustomers" EntityType="Self.tblCustomer" />
