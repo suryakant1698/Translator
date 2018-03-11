@@ -1,27 +1,27 @@
 ﻿@model WebApplication4.Models.Dp
-
 @{
     ViewBag.Title = "AddPic";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h2>AddPic</h2>
 
-
-@using (Html.BeginForm()) 
+@if (ViewBag.Messag != null)
+{
+    <div class="alert alert-success">
+        <strong>Succes!</strong>@ViewBag.Message
+    </div>
+}
+@using (Html.BeginForm("AddPic", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Dp</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <input type="file" name="image" id="image" />
-                   </div>
-
-      
-
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
