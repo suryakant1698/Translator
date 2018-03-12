@@ -27,34 +27,26 @@ namespace WebApplication4.Controllrs
         [ValidateAntiForgeryToken]
         public ActionResult Login_Post(Login login, string ReturnUrl = "")
         {
-            string message = "";
-            using (TranslatorEntities te = new TranslatorEntities())
+            Login newUser = new Login();
+            if (!newUser.VerifyUser(login))
             {
-                var user = te.tblCustomers.Where(n => n.Email == login.Email).FirstOrDefault();
-                if (user != null)
-                {
-                    if (string.Compare(Crypto.Hash(login.Password), user.Password) == 0)
-                    {
-                        int timeout = login.RememberMe ? 525600 : 20;
-                        var ticket = new FormsAuthenticationTicket(login.Email, login.RememberMe, timeout);
-                        var encrypted = FormsAuthentication.Encrypt(ticket);
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
-                        if (Url.IsLocalUrl(ReturnUrl))
-                        {
-                            return Redirect(ReturnUrl);    
-                        }
-                        else return RedirectToAction("Login", "Register");
-                    }
-                    else {
-                        message = "Invalid Credential provided";
-                    }
-                }
-                else message = "Invalid Credential Provided";
+                ViewBag.Message = "Invalid Credentials";
             }
-            ViewBag.Message = message;
+            else
+            {
+                int timeout = login.RememberMe ? 525600 : 20;
+                var ticket = new FormsAuthenticationTicket(login.Email, login.RememberMe, timeout);
+                var encrypted = FormsAuthentication.Encrypt(ticket);
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                cookie.HttpOnly = true;
+                Response.Cookies.Add(cookie);
+                if (Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else return RedirectToAction("Login", "Register");
+            }
             return View();
         }
 
@@ -71,24 +63,13 @@ namespace WebApplication4.Controllrs
         [ValidateAntiForgeryToken]
         public ActionResult Register_Post([Bind(Exclude = "isEmailVerified,ActivationCode")]User user)
         {
-            bool status = false;
-            string message = "";
             if (!ModelState.IsValid)
                 return View();
-            user.ActivationCode = Guid.NewGuid();
-            user.Password = Crypto.Hash(user.Password);
-            user.ConfirmPassword = Crypto.Hash(user.ConfirmPassword);
-            user.isEmailVerified = false;
             User newUser = new User();
-            newUser.SaveNewUser(user);
-            sendVerificationLinkEmail(user.Email, user.ActivationCode.ToString(), "VerifyAccount");
-            message = "Registration Succesful an email has been sent to your registered gmail account";
-            ViewBag.Message = message;
-            status = true;
-            ViewBag.Status = status;
+            string activationCode = newUser.SaveNewUser(user);
+            sendVerificationLinkEmail(user.Email, activationCode, "VerifyAccount");
+            ViewBag.Message = "Registration Succesful an email has been sent to your registered gmail account";
             return View();
-
-
         }
 
         [HttpGet]
@@ -102,38 +83,18 @@ namespace WebApplication4.Controllrs
         [HttpGet]
         public ActionResult VerifyAccount(string id)
         {
-            if (id != null)
+             if (id != null)
             {
-                using (TranslatorEntities te = new TranslatorEntities())
-                {
-                    bool status = false;
-                    te.Configuration.ValidateOnSaveEnabled = false;
-                    var v = te.tblCustomers.Where(a => a.ActivationCode == new Guid(id)).FirstOrDefault();
-                    if (v != null)
-                    {
-                        if (!(bool)v.isEmailVerified)
-                        {
-                            ViewBag.Message = "Your account has been activated aready";
-                            ViewBag.Status = false;
-                        }
-                        else
-                        {
-                            v.isEmailVerified = true;
-                            status = true;
-                            te.SaveChanges();
-                        }
-                    }
-                    else
-                    {
-                        status = false;
-                        ViewBag.Message = "Invalid Request";
-                    }
-                    ViewBag.status = status;
-                }
 
-
+                User user = new User();
+                string message = user.verifyAccount(id);
+                if (message == "Invalid Request")
+                    ViewBag.status = false;
+                else ViewBag.status = true;
+                ViewBag.message = message;
+                return View();
             }
-            return View();
+            else return HttpNotFound();
         }
 
         [HttpGet]
@@ -170,10 +131,12 @@ namespace WebApplication4.Controllrs
         [NonAction]
         public void sendVerificationLinkEmail(string email, string activationCode, string EmailFor)
         {
-            //var scheme = Request.Url.Scheme;
-            //var host = Request.Url.Host;
-            //var port = Request.Url.Port;
-            var verifyUrl = "/Register/'" + EmailFor + "'/" + activationCode;
+            var verifyUrl = "";
+            if (EmailFor == "VerifyAccount")
+            {
+                verifyUrl = "/Register/VerifyAccount/" + activationCode;
+            }
+            else verifyUrl = "/Register/ResetPassword/" + activationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
             var fromEmail = new MailAddress("suryakant.rocky@gmail.com");
             var toEmail = new MailAddress(email);
@@ -190,7 +153,7 @@ namespace WebApplication4.Controllrs
             {
                 subject = "Reset Password";
                 body = "We got request for reset your account passeord.Please click on the below link to reset password for your translator account"
-                    + "<br/> <br/> <a href="+link+">Click here to activate Now bitch</a>";
+                    + "<br/> <br/> <a href=" + link + ">Click here to activate Now bitch</a>";
             }
             var smtp = new SmtpClient
             {
@@ -241,10 +204,10 @@ namespace WebApplication4.Controllrs
                     var user = db.tblCustomers.Where(a => a.ResetPassworCode == User.ResetCode).FirstOrDefault();
                     user.Password = Crypto.Hash(User.NewPassword);
                     user.ResetPassworCode = "";
-                    db.Configuration.ValidateOnSaveEnabled=false;
+                    db.Configuration.ValidateOnSaveEnabled = false;
                     db.SaveChanges();
                     message = "Your password has been changed succesfuly you can login with your new password now";
-                    
+
                 }
                 ViewBag.message = message;
 

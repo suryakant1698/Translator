@@ -34,18 +34,42 @@ namespace WebApplication4.Models
         public Nullable<int> ImageId { get; set; }
 
 
-        public void SaveNewUser(User user)
+        public string SaveNewUser(User user)
         {
             TranslatorEntities newUser = new TranslatorEntities();
             tblCustomer User = new tblCustomer();
             User.Name = user.Name;
             User.Email = user.Email;
-            User.Password = user.Password;
+            User.Password = Crypto.Hash(user.Password);
+            User.ActivationCode = Guid.NewGuid();
+            //User.Password = user.Password;
             User.Mothertounge = user.Mothertounge;
-            User.isEmailVerified = user.isEmailVerified;
-            User.ActivationCode = user.ActivationCode;
+            User.isEmailVerified =false;
+           // User.ActivationCode = user.ActivationCode;
             newUser.tblCustomers.Add(User);
             newUser.SaveChanges();
+            return User.ActivationCode.ToString();
+        }
+        public string verifyAccount(string id)
+        {
+            using (TranslatorEntities db = new TranslatorEntities())
+            {
+                db.Configuration.ValidateOnSaveEnabled = false;
+                var user = db.tblCustomers.Where(a=>a.ActivationCode==new Guid(id)).FirstOrDefault();
+                if (user == null)
+                    return "Invalid Request";
+                else
+                {
+                    if (!(bool)user.isEmailVerified)
+                        return "Account already verified";
+                    else
+                    {
+                        user.isEmailVerified = true;
+                        db.SaveChanges();
+                        return "Account activated succesfuly";
+                    }
+                }
+            }
         }
     }
 }

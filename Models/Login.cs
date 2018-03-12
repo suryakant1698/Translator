@@ -20,5 +20,24 @@ namespace WebApplication4.Models
         [Display(Name ="Remember Me?")]
         public bool RememberMe { get; set; }
 
+        public bool VerifyUser(Login user)
+        {
+            using (TranslatorEntities db = new TranslatorEntities())
+            {
+                var userCredential = db.tblCustomers.Where(a=>a.Email==user.Email).FirstOrDefault();
+                if (userCredential == null)
+                    return false;
+                else
+                {
+                    if (string.Compare(Crypto.Hash(user.Password), userCredential.Password) == 0 && (bool)userCredential.isEmailVerified)
+                    {                        
+                        return true;
+                    }
+                    else return false;
+
+                }
+            }
+        }
+
     }
 }

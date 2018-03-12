@@ -20,5 +20,7 @@ namespace WebApplication4.Models
         public string ConfirmPassword { get; set; }
 
         public string ResetCode { get; set; }
+
+
     }
 }
