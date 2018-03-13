@@ -71,5 +71,24 @@ namespace WebApplication4.Models
                 }
             }
         }
+
+        public string saveResetCodeForForgotPassword(string Email)
+        {
+            using (TranslatorEntities db = new TranslatorEntities())
+            {
+                var user = db.tblCustomers.Where(a => a.Email == Email).FirstOrDefault();
+                if (user != null)
+                {
+                    string resetCode = Guid.NewGuid().ToString();                    
+                    user.ResetPassworCode = resetCode;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
+                    return resetCode;
+                    //ViewBag.Message = "Forgot Password link has been sent to your provided email address if registered";
+                }
+                else return null;
+            }
+
+        }
     }
 }

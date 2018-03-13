@@ -21,6 +21,19 @@ namespace WebApplication4.Models
 
         public string ResetCode { get; set; }
 
+        public void setPassword(ResetPassword userData)
+        {
+            using (TranslatorEntities db = new TranslatorEntities())
+            {
+                var user = db.tblCustomers.Where(a => a.ResetPassworCode == userData.ResetCode).FirstOrDefault();
+                user.Password = Crypto.Hash(userData.NewPassword);
+                user.ResetPassworCode = "";
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();                                 
+            }
+
+        }
+       
 
     }
 }

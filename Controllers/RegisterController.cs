@@ -13,9 +13,7 @@ namespace WebApplication4.Controllrs
     public class RegisterController : Controller
     {
         // GET: Register
-
-        [HttpGet]
-        [ActionName("Login")]
+        [HttpGet][ActionName("Login")]
         public ActionResult Login_Get()
         {
 
@@ -79,7 +77,6 @@ namespace WebApplication4.Controllrs
             return View();
         }
 
-
         [HttpGet]
         public ActionResult VerifyAccount(string id)
         {
@@ -108,23 +105,15 @@ namespace WebApplication4.Controllrs
         [ActionName("ForgotPassword")]
         public ActionResult ForgotPassword_Post(string Email)
         {
+            User currenUser = new User();
             bool status = false;
-            using (TranslatorEntities db = new TranslatorEntities())
+            string resetCode=currenUser.saveResetCodeForForgotPassword(Email);
+            if (resetCode == null)
             {
-                var user = db.tblCustomers.Where(a => a.Email == Email).FirstOrDefault();
-                if (user != null)
-                {
-                    string resetCode = Guid.NewGuid().ToString();
-                    sendVerificationLinkEmail(user.Email, resetCode, "ResetPassword");
-                    user.ResetPassworCode = resetCode;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-
-                    db.SaveChanges();
-                    ViewBag.Message = "Forgot Password link has been sent to your provided email address if registered";
-                }
-                else status = true;
+                status = true;
             }
-
+            else
+            sendVerificationLinkEmail(Email, resetCode, "ResetPassword");
             return View();
         }
 
@@ -187,29 +176,19 @@ namespace WebApplication4.Controllrs
                     return View(newUSer);
                 }
                 else return HttpNotFound();
-            }
-
+            }       
         }
 
         [HttpPost]
         [ActionName("ResetPassword")]
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword_Post(ResetPassword User)
-        {
-            var message = "";
+        {         
             if (ModelState.IsValid)
             {
-                using (TranslatorEntities db = new TranslatorEntities())
-                {
-                    var user = db.tblCustomers.Where(a => a.ResetPassworCode == User.ResetCode).FirstOrDefault();
-                    user.Password = Crypto.Hash(User.NewPassword);
-                    user.ResetPassworCode = "";
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                    message = "Your password has been changed succesfuly you can login with your new password now";
-
-                }
-                ViewBag.message = message;
+                ResetPassword userData = new ResetPassword();
+                userData.setPassword(User);
+                 ViewBag.message = "Your password has been changed succesfuly you can login with your new password now";
 
             }
 

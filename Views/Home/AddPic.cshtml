@@ -22,9 +22,19 @@
         <div class="form-group">
             <input type="file" name="image" id="image" />
         </div>
+       
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+            <div class="col-md-4">
+                <div id="imgPreview" class="thumbnail" style="display:none">
+                    <img class="img-responsive" id="targetImg" />
+                    <div class="caption">
+                        <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                        <p id="description"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -32,7 +42,41 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#image").change(function () {
+            var File = this.files;
 
+            if (File && File[0]) {
+                ReadImage(File[0]);
+
+            }
+            })
+        var ReadImage = function (file) {
+            var reader = new FileReader;
+            var image = new Image;
+            reader.readAsDataURL(file);
+            reader.onload = function (_file) {
+                image.src = _file.target.result;
+                image.onload = function () {
+                    var height = this.height;
+                    var width = this.width;
+                    var type = file.type;
+                    var size = ~~(file.size / 1024) + "KB";
+                    $("#targetImg").attr('src', _file.target.result);
+                    $("#description").text("Size:" + size + "," + height + "x" + width);
+                    $("#imgPreview").show();
+                }
+            }
+        }
+    })
+    var ClearPreview = function () {
+        $("#imageBrowes").val('');
+        $("#description").text('');
+        $("#imgPreview").hide();
+    }
+</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
