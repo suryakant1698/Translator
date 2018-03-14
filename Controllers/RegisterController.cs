@@ -22,7 +22,7 @@ namespace WebApplication4.Controllrs
 
         [HttpPost]
         [ActionName("Login")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login_Post(Login login, string ReturnUrl = "")
         {
             Login newUser = new Login();

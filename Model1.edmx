@@ -17,8 +17,8 @@
           <Property Name="isEmailVerified" Type="bit" />
           <Property Name="ActivationCode" Type="uniqueidentifier" />
           <Property Name="ResetPassworCode" Type="nvarchar" MaxLength="100" />
-          <Property Name="ImageId" Type="int" />
           <Property Name="ImageData" Type="varbinary(max)" />
+          <Property Name="ImageType" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="TranslatorModelStoreContainer">
           <EntitySet Name="tblCustomers" EntityType="Self.tblCustomers" Schema="dbo" store:Type="Tables" />
@@ -39,8 +39,8 @@
           <Property Name="isEmailVerified" Type="Boolean" />
           <Property Name="ActivationCode" Type="Guid" />
           <Property Name="ResetPassworCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ImageId" Type="Int32" />
           <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ImageType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="TranslatorEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tblCustomers" EntityType="Self.tblCustomer" />
@@ -54,8 +54,8 @@
           <EntitySetMapping Name="tblCustomers">
             <EntityTypeMapping TypeName="TranslatorModel.tblCustomer">
               <MappingFragment StoreEntitySet="tblCustomers">
+                <ScalarProperty Name="ImageType" ColumnName="ImageType" />
                 <ScalarProperty Name="ImageData" ColumnName="ImageData" />
-                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="ResetPassworCode" ColumnName="ResetPassworCode" />
                 <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
                 <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />

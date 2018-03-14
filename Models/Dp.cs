@@ -10,6 +10,6 @@ namespace WebApplication4.Models
     {
         [Required]
         public byte[] ImageData { get; set; }
-
+        public string FileType { get; set; }
     }
 }

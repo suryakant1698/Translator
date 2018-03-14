@@ -12,8 +12,8 @@
     <Property Name="isEmailVerified" Type="bit" />
     <Property Name="ActivationCode" Type="uniqueidentifier" />
     <Property Name="ResetPassworCode" Type="nvarchar" MaxLength="100" />
-    <Property Name="ImageId" Type="int" />
     <Property Name="ImageData" Type="varbinary(max)" />
+    <Property Name="ImageType" Type="nvarchar(max)" />
   </EntityType>
   <EntityContainer Name="TranslatorModelStoreContainer">
     <EntitySet Name="tblCustomers" EntityType="Self.tblCustomers" Schema="dbo" store:Type="Tables" />

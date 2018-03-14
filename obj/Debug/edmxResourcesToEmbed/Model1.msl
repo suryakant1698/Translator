@@ -4,8 +4,8 @@
     <EntitySetMapping Name="tblCustomers">
       <EntityTypeMapping TypeName="TranslatorModel.tblCustomer">
         <MappingFragment StoreEntitySet="tblCustomers">
+          <ScalarProperty Name="ImageType" ColumnName="ImageType" />
           <ScalarProperty Name="ImageData" ColumnName="ImageData" />
-          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
           <ScalarProperty Name="ResetPassworCode" ColumnName="ResetPassworCode" />
           <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
           <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />
