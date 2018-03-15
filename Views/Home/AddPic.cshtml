@@ -11,6 +11,7 @@
         <strong>Succes!</strong>@ViewBag.Message
     </div>
 }
+
 @using (Html.BeginForm("AddPic", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
