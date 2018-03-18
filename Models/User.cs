@@ -42,10 +42,9 @@ namespace WebApplication4.Models
             User.Email = user.Email;
             User.Password = Crypto.Hash(user.Password);
             User.ActivationCode = Guid.NewGuid();
-            //User.Password = user.Password;
+            
             User.Mothertounge = user.Mothertounge;
             User.isEmailVerified =false;
-           // User.ActivationCode = user.ActivationCode;
             newUser.tblCustomers.Add(User);
             newUser.SaveChanges();
             return User.ActivationCode.ToString();

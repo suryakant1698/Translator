@@ -10,15 +10,14 @@ namespace WebApplication4.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name ="New Password")]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name ="Confirm Password")]
-        [Compare("NewPassword",ErrorMessage ="Password and confirm password do not match")]
+        [Display(Name = "Confirm Password")]
+        [Compare("NewPassword", ErrorMessage = "Password and confirm password do not match")]
         public string ConfirmPassword { get; set; }
-
         public string ResetCode { get; set; }
 
         public void setPassword(ResetPassword userData)
@@ -29,10 +28,8 @@ namespace WebApplication4.Models
                 user.Password = Crypto.Hash(userData.NewPassword);
                 user.ResetPassworCode = "";
                 db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();                                 
+                db.SaveChanges();
             }
-
         }
-      
-    }
+    }      
 }

@@ -13,8 +13,7 @@ namespace WebApplication4.Models
             var user = (User)validationContext.ObjectInstance;
             TranslatorEntities newUser = new TranslatorEntities();
             if (user.Email == null) return new ValidationResult("Email is required");
-            var isValid = newUser.tblCustomers.SingleOrDefault(c=>c.Email==user.Email);
-            
+            var isValid = newUser.tblCustomers.SingleOrDefault(c=>c.Email==user.Email);            
             if (isValid == null)
                 return ValidationResult.Success;
             else
