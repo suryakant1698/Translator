@@ -8,6 +8,7 @@ namespace WebApplication4.Models
 {
     public class ResetPassword
     {
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
