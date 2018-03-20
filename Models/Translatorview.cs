@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebApplication4.Models
 {
-    public class Translatorview
+    public class TranslatorView
     {
         public string sourceLanguage { get; set; }
         public string SourceText { get; set; }

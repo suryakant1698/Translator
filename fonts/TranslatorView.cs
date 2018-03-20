@@ -10,6 +10,5 @@ namespace WebApplication4.fonts
     {
         public LanguageProperties Language{ get; set; }
         public ApiProperties Api { get; set; }
-
     }
 }

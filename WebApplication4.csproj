@@ -220,13 +220,16 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\APIProperties.cs" />
     <Compile Include="Models\Crypto.cs" />
     <Compile Include="Models\Dp.cs" />
     <Compile Include="Models\EmailValidator.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ResetPassword.cs" />
+    <Compile Include="Models\TranslatorView.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -320,6 +323,7 @@
     <Content Include="Views\Register\ResetPassword.cshtml" />
     <Content Include="Views\Register\ResetPassword_Get.cshtml" />
     <Content Include="Views\Home\AddPic.cshtml" />
+    <Content Include="Views\Home\Translator.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

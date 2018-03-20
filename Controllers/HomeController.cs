@@ -18,6 +18,10 @@ namespace WebApplication4.Controllers
             DisplayPic();
             return View();
         }
+        public ActionResult Translator()
+        {
+            return View();
+        }
 
         [Authorize]
         [HttpGet]

@@ -5,9 +5,9 @@ using System.Web;
 
 namespace WebApplication4.Models
 {
-    public class LanguageProperties
+    public class Language
     {
-        public string Language { get; set; }
+        public string LanguageName { get; set; }
         public string Text { get; set; }
         public string Code { get; set; }
 
