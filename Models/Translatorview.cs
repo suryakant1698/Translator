@@ -7,10 +7,8 @@ namespace WebApplication4.Models
 {
     public class TranslatorView
     {
-        public string sourceLanguage { get; set; }
-        public string SourceText { get; set; }
-        public string DestinationLanguage { get; set; }
-        public string DestinationText { get; set; }
+        public static ApiProperties Api { get; set; }
+        public static Language Language { get; set; }
 
     }
 }

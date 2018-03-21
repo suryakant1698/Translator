@@ -18,8 +18,12 @@ namespace WebApplication4.Controllers
             DisplayPic();
             return View();
         }
+
         public ActionResult Translator()
         {
+            ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            ViewBag.Translate = ApiProperties.Translate;
             return View();
         }
 
