@@ -24,6 +24,7 @@ namespace WebApplication4.Controllers
             ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
             ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
             ViewBag.Translate = ApiProperties.Translate;
+            ViewBag.key = "";
             return View();
         }
 
@@ -62,7 +63,6 @@ namespace WebApplication4.Controllers
                         db.Configuration.ValidateOnSaveEnabled = false;
                         db.SaveChanges();
                         ViewBag.Message = "Photo uploaded succesfuly";
-
                         return View(imageModel);
                         //db.tblCustomers.Add(imageModel);
                     }

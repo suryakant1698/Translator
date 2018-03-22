@@ -82,7 +82,6 @@ namespace WebApplication4.Controllrs
         {
              if (id != null)
             {
-
                 User user = new User();
                 string message = user.verifyAccount(id);
                 if (message == "Invalid Request")
