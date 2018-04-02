@@ -16,15 +16,15 @@ namespace WebApplication4.Controllrs
         [HttpGet][ActionName("Login")]
         public ActionResult Login_Get()
         {
-
             return View();
         }
 
         [HttpPost]
         [ActionName("Login")]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Login_Post(Login login, string ReturnUrl = "")
         {
+
             Login newUser = new Login();
             if (!newUser.VerifyUser(login))
             {

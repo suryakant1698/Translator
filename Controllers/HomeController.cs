@@ -21,10 +21,11 @@ namespace WebApplication4.Controllers
 
         public ActionResult Translator()
         {
+            ViewBag.key = ApiProperties.key;
             ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
             ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
             ViewBag.Translate = ApiProperties.Translate;
-            ViewBag.key = "";
+            ViewBag.key = ApiProperties.key;
             return View();
         }
 
