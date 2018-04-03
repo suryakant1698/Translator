@@ -9,27 +9,33 @@
 <div id="showsrc">
     <input type="button" value="List languages" id="btnListLanguages" />
     <div id="listLanguages">
-
+        <select id="dropDown" style="width:150px;max-height:100px;overflow-y:auto"><option value="0">---Select A Language---</option></select>
     </div>
 </div>
 <script type="text/javascript">
     var sourceLanguageApi = '@ViewBag.DetectSrc.ToString()'.replace("{1}","en");;
     var languageListApi = '@ViewBag.GetLanguages'.replace("{1}","'en'");;
     var translate = '@ViewBag.Translate';
-    var key ='@ViewBag.key';
+    var key = '@ViewBag.key';
+    var languageDropdown = $('#dropDown');
+    var displayText = "";
     var display = document.getElementById('listLanguages');
+    window.onload = function () {
+      //  languageDropdown.append($('<option/>', { value: -1, text: "Select an option"}));
+    }; var lang;
+    var code;
     $(document).ready(function () {
         console.log(languageListApi);
         $('#btnListLanguages').click(function () {
             console.log("function call successful");
-           $.ajax({
-               
+           $.ajax({               
                 url: languageListApi,
                 method: 'get',
                 data: {key:key, ui: 'en'},
                 dataType: 'json',                
                 success: function (data) {
-                    display.innerHTML = data["langs"].en;
+                    var object = data["langs"];
+                    display.innerHTML = displayText;
                 }
             });
         });
