@@ -1,56 +1,129 @@
-﻿@model WebApplication4.Models.ApiProperties
-
-@{
-    ViewBag.Title = "Translator";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{
+    Layout = null;
 }
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<h2>Translator</h2>
-<div id="showsrc">
-    <textarea id="text" style="width:100%"></textarea>
-        <input type="button" value="List languages" id="btnListLanguages" />
-    <div id="listLanguages">
-        <select id="dropDown" style="width:150px;max-height:100px;overflow-y:auto"><option value="0">---Select A Language---</option></select>
-    </div>
-</div>
-<div id="resultDiv" >
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    @*<script src="~/Scripts/chosen.jquery.js"></script>*@
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    @*<script type="text/javascript" >
+        $(document).ready(function () {
+                $("#dropDown").chosen();
+                // $("#lstChosenEmployee").chosen();
 
-</div>
-<script type="text/javascript">
-    var sourceLanguageApi = '@ViewBag.DetectSrc.ToString()'.replace("{1}", "en");;
-    var languageListApi = '@ViewBag.GetLanguages'.replace("{1}", "'en'");;
-    var translate = '@ViewBag.Translate';
-    var key = '@ViewBag.key';
-    var languageDropdown = $('#dropDown');
-    var displayText = "";
-    var display = document.getElementById('listLanguages');
-    window.onload = function () {
-    }; var lang;
-    var code;
-    window.onload = function () {
-        $.ajax({
-            url: languageListApi,
-            method: 'get',
-            data: { key: key, ui: 'en' },
-            dataType: 'json',
-            success: function (data) {
-                var object = data["langs"];
-                for (var property in object) {
-                    if (object.hasOwnProperty(property)) {
-                        code = property;
-                        lang = object[property];
-                        languageDropdown.append('<option value="' + code + '" >' + lang + '</option>');
+            });
+        </script>*@
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>Translator</title>
+</head>
+<body>
+    <div>
+        @*<script src="~/Scripts/jquery-1.10.2.js"></script>*@
+        <h2>Translator</h2>
+        <div id="showsrc">
+            <textarea id="tbxSourceText" style="width:100%" required></textarea>
+            <input type="button" value="List languages" id="btnListLanguages" />
+            <div id="listLanguages">
+                <select id="dropDown" class="chosentest" style="width:180px;max-height:100px;overflow-y:auto"><option value="0">---Select A Language---</option></select>
+                @*@Html.DropDownList("dropDown",null,"--Select--", new { style = "width:90%" })*@
+            </div>
+        </div>
+        <div id="resultDiv">
+        </div>
+        <div id="statusDiv"></div>
+        <script type="text/javascript">
+            var sourceLanguageApi = '@ViewBag.DetectSrc.ToString()';
+            var languageListApi = '@ViewBag.GetLanguages';
+            var translate = '@ViewBag.Translate';
+            var key = '@ViewBag.key';
+            var languageDropdown = $('#dropDown');
+            var displayText = "";
+            var tbxTextLanguage = "";
+            var resultDiv = $('#resultDiv');
+            var display = document.getElementById('listLanguages');
+            var lang, code, crap;
+            var statusDiv = $('#statusDiv');
+            var tbxSourceText = document.getElementById('tbxSourceText');
+            window.onload = function () {
+
+            };
+
+
+            $(document).ready(function () {
+
+                //$(document).ready(function () { $("#ddlChosenEmployee").chosen(); });
+                //console.log(languageListApi);
+                //$("languageDropdown").chosen();
+                $('#btnListLanguages').click(function () {
+                    var k = languageDropdown.val();
+                    if (tbxSourceText.value == "") {
+                        statusDiv.addClass("alert alert-danger");
+                        statusDiv.html("<strong>Error!</strong> Type something in the input field to be translated");
                     }
-                }
-            }
-        });
-    };
-    $(document).ready(function () {
-        console.log(languageListApi);
-        $('#btnListLanguages').click(function () {
+                    else {
+                        if (languageDropdown.value == 0) {
+                            statusDiv.addClass("alert alert-danger");
+                            statusDiv.html("<strong>Error!</strong> Please select a language to be translated");
+                            console.log("Error");
+                        }
+                        else {
+                            $.ajax({
+                                url: sourceLanguageApi,
+                                data: { key: key, text: tbxSourceText.value },
+                                method: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $.ajax({
+                                        url: translate,
+                                        method: 'get',
+                                        data: {
+                                            key: key,
+                                            text: tbxSourceText.value,
+                                            lang: languageDropdown.val()
+                                        },
+                                        success: function (data) {
+                                            resultDiv.html(data["text"]);
+                                            console.log(data["text"]);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
 
-            var k=languageDropdown.options[languageDropdown.selectedIndex].value;
-            $('#resultDiv').innerHTML = k;
-        });
-    });
-</script>
+
+
+                $.ajax({
+                    url: languageListApi,
+                    method: 'get',
+                    data: { key: key, ui: 'en' },
+                    dataType: 'json',
+                    success: function (data) {
+                        var object = data["langs"];
+                        for (var property in object) {
+                            if (object.hasOwnProperty(property)) {
+                                code = property;
+                                lang = object[property];
+                                languageDropdown.append('<option value="' + code + '" >' + lang + '</option>');
+                                console.log("Wakadush");
+
+                            }
+                        }
+                        $("#dropDown").chosen();
+                    }
+                });
+
+            });
+        </script>
+    </div>
+</body>
+</html>
