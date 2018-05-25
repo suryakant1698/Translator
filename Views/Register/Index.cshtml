@@ -1,94 +1,140 @@
 ﻿@model WebApplication4.Models.User
 
 @{
-    ViewBag.Title = "Register";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<h2>Register Now</h2>
-@if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
-{
-    if (ViewBag.Message != null)
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <title>Index</title>
+</head>
+<body>
+
+    <h2>Register Now</h2>
+    @if (ViewBag.status != null && ViewBag.status)
     {
-        <div class="alert alert-success">
-            <strong>Registration Succesful an email has been sent to your email account</strong>
-        </div>
-    }
-}
-else
-{
-    using (Html.BeginForm("Index", "Register"))
-    {
-        @Html.AntiForgeryToken()
+        if (ViewBag.Message != null)
         {
-            <div class="form-horizontal">
-                <h4>User</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+            <div class="alert alert-success">
+                <strong>Registration Succesful an email has been sent to your email account</strong>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Mothertounge, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Mothertounge, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Mothertounge, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
-                    </div>
-                </div>
             </div>
         }
-
-
     }
-    if(ViewBag.Message != null)
+    else
     {
-        <div class="alert alert-danger">
-            <strong>Error</strong> @ViewBag.Message
+        using (Html.BeginForm("Index", "Register"))
+        {
+            @Html.AntiForgeryToken()
+            {
+                <div class="form-horizontal">
+                    <h4>User</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Mothertounge, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                           <select id="dropDown" name="Mothertounge" ><option value="">--Select an option--</option></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Register" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error</strong> @ViewBag.Message
+
+            </div>
 
         }
     }
-<div>
-    @Html.ActionLink("Login if already registered", "Login")
-    @Html.AntiForgeryToken()
-</div>
+    <div>
+        @Html.ActionLink("Login if already registered", "Login")
+        @Html.AntiForgeryToken()
+    </div>
+    <script type="text/javascript">
+    </script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    var languageDropdown = $('#dropDown');
+    $(document).ready(function () {
+        var key = '@ViewBag.key';
+        var listLanguages = '@ViewBag.GetLanguages';
+        $.ajax({
+            url: listLanguages,
+            method: 'get',
+            data:{
+                key: key,
+                ui:'en'
+            },
+            dataTypwe:'json',
+            success: function (data) {
+                var object = data["langs"];
+                for (var property in object) {
+                    if(object.hasOwnProperty(property))
+                    {
+                        code = property;
+                        lang = object[property];
+                        languageDropdown.append('<option value="' + lang+ '" >' + lang+ '</option>');
+                    }
+                }
+                $("#dropDown").chosen();
+            }
+        });
+    });
+</script>
+</body>
+</html>

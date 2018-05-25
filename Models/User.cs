@@ -36,7 +36,7 @@ namespace WebApplication4.Models
 
         public string SaveNewUser(User user)
         {
-            TranslatorEntities newUser = new TranslatorEntities();
+            TranslatorDBEntities newUser = new TranslatorDBEntities();
             tblCustomer User = new tblCustomer();
             User.Name = user.Name;
             User.Email = user.Email;
@@ -51,7 +51,7 @@ namespace WebApplication4.Models
         }
         public string verifyAccount(string id)
         {
-            using (TranslatorEntities db = new TranslatorEntities())
+            using (TranslatorDBEntities db = new TranslatorDBEntities())
             {
                 db.Configuration.ValidateOnSaveEnabled = false;
                 var user = db.tblCustomers.Where(a=>a.ActivationCode==new Guid(id)).FirstOrDefault();
@@ -73,7 +73,7 @@ namespace WebApplication4.Models
 
         public string saveResetCodeForForgotPassword(string Email)
         {
-            using (TranslatorEntities db = new TranslatorEntities())
+            using (TranslatorDBEntities db = new TranslatorDBEntities())
             {
                 var user = db.tblCustomers.Where(a => a.Email == Email).FirstOrDefault();
                 if (user != null)

@@ -1,0 +1,164 @@
+﻿<div style="margin-left:50px;margin-top:20px;">   
+    <h2 style="font-family: 'Stylish', sans-serif;">Translator</h2>
+    <div>
+        <div id="showsrc">
+            <textarea id="tbxSourceText" style="width:300px; max-width:80%;max-height:400px; " required></textarea>
+            <br />
+            <div style="float:left">
+            <input type="button" class="btn btn-default" value="Translate" id="btnListLanguages" />
+                </div>
+            <div id="listLanguages" style="float:left; padding-left:3%" class="">
+                <select id="dropDown" class="chosentest" style="width:180px;max-height:100px;overflow-y:auto"><option value="0">---Select A Language---</option></select>
+            </div>
+        </div>
+        <div id="language">
+        </div>
+        <div id="resultDiv">
+        </div>
+        <div id="statusDiv"></div>
+    </div>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        var sourceLanguageApi = '@ViewBag.DetectSrc.ToString()';
+        var languageListApi = '@ViewBag.GetLanguages';
+        var translate = '@ViewBag.Translate';
+        var key = '@ViewBag.key';
+        var displayText = "";
+        var ajaxData;
+        var sourceLanguage,sourceText,destinationLanguage,destinationText;
+        var sourceText = $('#hfSourceText');
+        var destinationLanguage = $('#hfDestinationLanguage');
+        var destinationText = $('#hfDestinationText');
+        var object;
+        var resultDiv = $('#resultDiv');
+        var languageDropdown = $('#dropDown');
+        var display = document.getElementById('listLanguages');
+        var lang, code, crap;
+        var statusDiv = $('#statusDiv');
+        var tbxSourceText = document.getElementById('tbxSourceText');
+       
+        function ajaxCall() {
+            $.ajax({
+                url: sourceLanguageApi,
+                data: { key: key, text: tbxSourceText.value },
+                method: 'get',
+                dataType: 'json',
+                success: function (data1) {
+                    var prop = data1["lang"];
+                    console.log(prop);
+                    $('#language').html("Your Text Language:" + object[prop]);
+                    $.ajax({
+                        url: translate,
+                        method: 'get',
+                        data: {
+                            key: key,
+                            text: tbxSourceText.value,
+                            lang: languageDropdown.val()
+                        },
+                        success: function (data) {
+                            resultDiv.html(data["text"]);
+                            sourceLanguage = object[prop];
+                            destinationLanguage=object[languageDropdown.val()];
+                            destinationText=data["text"];
+                        }
+                    });
+                }
+            });
+        };
+        $(document).ready(function () {
+            $('#btnSave').click(function () {
+               
+                $.ajax({
+                    url: sourceLanguageApi,
+                    data: { key: key, text: tbxSourceText.value },
+                    method: 'get',
+                    dataType: 'json',
+                    success: function (data1) {
+                        var prop = data1["lang"];
+                        console.log(prop);
+                        $('#language').html("Your Text Language:" + object[prop]);
+                        $.ajax({
+                            url: translate,
+                            method: 'get',
+                            data: {
+                                key: key,
+                                text: tbxSourceText.value,
+                                lang: languageDropdown.val()
+                            },
+                            success: function (data) {
+                                resultDiv.html(data["text"]);
+                                sourceLanguage = object[prop];
+                                destinationLanguage = object[languageDropdown.val()];
+                                
+                                destinationText = String(data["text"]);
+
+                                console.log(destinationText);
+                                var data = {
+                                    SourceLanguage: sourceLanguage,
+                                    SourceText: tbxSourceText.value,
+                                    DestinationLanguage: destinationLanguage,
+                                    DestinationText: destinationText,
+                                    UserID:0
+                                };
+
+                                $.ajax({
+                                    type:'post',
+                                    url: '@Url.Action("SaveTranslation","Home")',
+                                    data: JSON.stringify({ trView :data}),
+                                    contentType: "application/json",
+                                    processtype:false,
+                                    success: function () {
+                                        statusDiv.html("<strong>Succes!</strong>Data saved succesfully<a href='" + "#" + "' class='" + "close" + "' data-dismiss='" + "alert" + "'>&times;</a>");
+                                        statusDiv.addClass("alert alert-succes");
+
+                                    },
+                                });
+                            }
+                        });
+                    }
+                });
+                
+            });
+            $('#btnListLanguages').click(function () {
+                if (tbxSourceText.value === "") {
+                    statusDiv.addClass("alert alert-danger");
+                    //var crossSign = JSON.stringify( '<a href="#" class="close" data-dismiss="alert">&times;</a>' );
+                    statusDiv.html("<strong>Error!</strong> Type something in the input field to be translated <a href='" + "#" + "' class='" + "close" + "' data-dismiss='" + "alert" + "'>&times;</a>");
+                }
+                else {
+                    if (languageDropdown.value == 0) {
+                        statusDiv.addClass("alert alert-danger");
+                        statusDiv.html("<strong>Error!</strong> Please select a language to be translated");
+                        console.log("Error");
+                    }
+                    else {
+                        ajaxCall();
+                    }
+                }
+            });
+            $.ajax({
+                url: languageListApi,
+                method: 'get',
+                data: { key: key, ui: 'en' },
+                dataType: 'json',
+                success: function (ajaxData) {
+                    object = ajaxData["langs"];
+                    for (var property in object) {
+                        if (object.hasOwnProperty(property)) {
+                            code = property;
+                            lang = object[property];
+                            languageDropdown.append('<option value="' + code + '" >' + lang + '</option>');
+                            
+                        }
+                    }
+                    $("#dropDown").chosen();
+                }
+            });
+        });
+    </script>
+</div>

@@ -16,6 +16,12 @@ namespace WebApplication4.Controllrs
         [HttpGet][ActionName("Login")]
         public ActionResult Login_Get()
         {
+            if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+                return RedirectToAction("Index", "Home");
+            ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            ViewBag.Translate = ApiProperties.Translate;
+            ViewBag.key = ApiProperties.key;
             return View();
         }
 
@@ -25,6 +31,10 @@ namespace WebApplication4.Controllrs
         public ActionResult Login_Post(Login login, string ReturnUrl = "")
         {
 
+            ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            ViewBag.Translate = ApiProperties.Translate;
+            ViewBag.key = ApiProperties.key;
             Login newUser = new Login();
             if (!newUser.VerifyUser(login))
             {
@@ -43,7 +53,7 @@ namespace WebApplication4.Controllrs
                 {
                     return Redirect(ReturnUrl);
                 }
-                else return RedirectToAction("Login", "Register");
+                else return RedirectToAction("Index", "Home");
             }
             return View();
         }
@@ -59,13 +69,19 @@ namespace WebApplication4.Controllrs
         [HttpPost]
         [ActionName("Index")]
         [ValidateAntiForgeryToken]
-        public ActionResult Register_Post([Bind(Exclude = "isEmailVerified,ActivationCode")]User user)
+        public ActionResult Register_Post([Bind(Exclude = "isEmailVerified,ActivationCode")]User user,string Mothertounge)
         {
+
+            ViewBag.navbar = false;
             if (!ModelState.IsValid)
                 return View();
+            ViewBag.key = ApiProperties.key;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            user.Mothertounge = Mothertounge;
             User newUser = new User();
             string activationCode = newUser.SaveNewUser(user);
             sendVerificationLinkEmail(user.Email, activationCode, "VerifyAccount");
+            ViewBag.status = true;
             ViewBag.Message = "Registration Succesful an email has been sent to your registered gmail account";
             return View();
         }
@@ -74,6 +90,15 @@ namespace WebApplication4.Controllrs
         [ActionName("Index")]
         public ActionResult Register_Get()
         {
+            ViewBag.key = ApiProperties.key;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+                return RedirectToAction("Index", "Home");
+            ViewBag.DetectSrc = ApiProperties.DetectSourcceLanguage;
+            ViewBag.GetLanguages = ApiProperties.GetAvailableLanguages;
+            ViewBag.Translate = ApiProperties.Translate;
+            ViewBag.key = ApiProperties.key;
+
             return View();
         }
 
@@ -113,59 +138,17 @@ namespace WebApplication4.Controllrs
             }
             else
             sendVerificationLinkEmail(Email, resetCode, "ResetPassword");
+            ViewBag.message = "A password reset link has been sent to your supplied email address if already registered";
             return View();
         }
 
-        [NonAction]
-        public void sendVerificationLinkEmail(string email, string activationCode, string EmailFor)
-        {
-            var verifyUrl = "";
-            if (EmailFor == "VerifyAccount")
-            {
-                verifyUrl = "/Register/VerifyAccount/" + activationCode;
-            }
-            else verifyUrl = "/Register/ResetPassword/" + activationCode;
-            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-            var fromEmail = new MailAddress("suryakant.rocky@gmail.com");
-            var toEmail = new MailAddress(email);
-            var fromEmailPassword = "suryasharma";
-            string subject = "", body = "";
-            if (EmailFor == "VerifyAccount")
-            {
-
-                subject = "Your account is succesfuly created ";
-                body = "<br/> <br/> This is to inform you that your translator account has been created succesfully.Click on the below link to verify your account" +
-                    "<a href='" + link + "'>Click here to activate</a>";
-            }
-            else
-            {
-                subject = "Reset Password";
-                body = "We got request for reset your account passeord.Please click on the below link to reset password for your translator account"
-                    + "<br/> <br/> <a href=" + link + ">Click here to activate Now bitch</a>";
-            }
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
-            };
-            using (var message = new MailMessage(fromEmail, toEmail)
-            {
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            })
-                smtp.Send(message);
-        }
+        
 
         [HttpGet]
         [ActionName("ResetPassword")]
         public ActionResult ResetPassword_Get(string id)
         {
-            using (TranslatorEntities db = new TranslatorEntities())
+            using (TranslatorDBEntities db = new TranslatorDBEntities())
             {
                 var user = db.tblCustomers.Where(a => a.ResetPassworCode == id).FirstOrDefault();
                 if (user != null)
@@ -192,6 +175,29 @@ namespace WebApplication4.Controllrs
             }
 
             return View();
+        }
+        [NonAction]
+        public void sendVerificationLinkEmail(string email, string activationCode, string EmailFor)
+        {
+            var verifyUrl = "";
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+            string subject = "", body ="";
+            if (EmailFor == "VerifyAccount")
+            {
+                verifyUrl = "/Register/VerifyAccount/" + activationCode;
+                subject = "Your account is succesfuly created ";
+                body = "<br/> <br/> This is to inform you that your translator account has been created succesfully.Click on the below link to verify your account" +
+                    "<a href='" + link + "'>Click here to activate</a>";
+            }
+            else
+            {
+                verifyUrl = "/Register/ResetPassword/" + activationCode;
+                subject = "Reset Password";
+                body = "We got request for reset your account passeord.Please click on the below link to reset password for your translator account"
+                    + "<br/> <br/> <a href=" + link + ">Click here to activate Now</a>";
+            }
+            Mail.Email(body,email,subject);
+
         }
     }
 }

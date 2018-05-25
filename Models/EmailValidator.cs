@@ -11,7 +11,7 @@ namespace WebApplication4.Models
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var user = (User)validationContext.ObjectInstance;
-            TranslatorEntities newUser = new TranslatorEntities();
+            TranslatorDBEntities newUser = new TranslatorDBEntities();
             if (user.Email == null) return new ValidationResult("Email is required");
             var isValid = newUser.tblCustomers.SingleOrDefault(c=>c.Email==user.Email);            
             if (isValid == null)

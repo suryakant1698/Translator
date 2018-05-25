@@ -23,7 +23,7 @@ namespace WebApplication4.Models
 
         public void setPassword(ResetPassword userData)
         {
-            using (TranslatorEntities db = new TranslatorEntities())
+            using (TranslatorDBEntities db = new TranslatorDBEntities())
             {
                 var user = db.tblCustomers.Where(a => a.ResetPassworCode == userData.ResetCode).FirstOrDefault();
                 user.Password = Crypto.Hash(userData.NewPassword);

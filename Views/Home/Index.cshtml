@@ -1,20 +1,37 @@
-﻿
+﻿@model WebApplication4.Models.History
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <title>Index</title>
+</head>
+<body>
+    @Html.Partial("_Navbar")
+    <div>
+        @using (Html.BeginForm("SaveTranslation", "Home"))
+            {
+            @Html.Partial("_Translator")
+            <input id="btnSave" value="Translate & Save" class="btn btn-default" />
+            @Html.HiddenFor(m => m.DestinationLanguage, new { @id = "hfDestinationLanguage" })
+           
+            @Html.HiddenFor(m => m.SourceLanguage, new {@id="hfSourcceLanguage" })
+            @Html.HiddenFor(m => m.SourceText, new { @id = "hfSourceText" })
 
-<h2>Index</h2>
+        }
+        <script type="text/javascript">
 
-  Welcome @HttpContext.Current.User.Identity.Name
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("Logout","Register",FormMethod.Post,new { id = "logoutForm" }))
-    {
-        <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-    }
-}
-@if(ViewBag.Message!=null)
-{
-    <b>@ViewBag.Messge</b>
-}
+        </script>
+    </div>
+</body>
+</html>

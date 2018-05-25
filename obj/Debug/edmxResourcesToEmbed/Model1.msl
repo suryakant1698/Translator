@@ -1,19 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="TranslatorModelStoreContainer" CdmEntityContainer="TranslatorEntities">
+  <EntityContainerMapping StorageEntityContainer="TranslatorModelStoreContainer" CdmEntityContainer="TranslatorDBEntities">
     <EntitySetMapping Name="tblCustomers">
       <EntityTypeMapping TypeName="TranslatorModel.tblCustomer">
         <MappingFragment StoreEntitySet="tblCustomers">
-          <ScalarProperty Name="ImageType" ColumnName="ImageType" />
-          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
-          <ScalarProperty Name="ResetPassworCode" ColumnName="ResetPassworCode" />
-          <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
-          <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Mothertounge" ColumnName="Mothertounge" />
+          <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />
+          <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+          <ScalarProperty Name="ResetPassworCode" ColumnName="ResetPassworCode" />
+          <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+          <ScalarProperty Name="ImageType" ColumnName="ImageType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblHistories">
+      <EntityTypeMapping TypeName="TranslatorModel.tblHistory">
+        <MappingFragment StoreEntitySet="tblHistory">
+          <ScalarProperty Name="SourceLanguage" ColumnName="SourceLanguage" />
+          <ScalarProperty Name="SourceText" ColumnName="SourceText" />
+          <ScalarProperty Name="DestinationLanguage" ColumnName="DestinationLanguage" />
+          <ScalarProperty Name="DestinationText" ColumnName="DestinationText" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

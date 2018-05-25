@@ -13,10 +13,10 @@ namespace WebApplication4
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TranslatorEntities : DbContext
+    public partial class TranslatorDBEntities : DbContext
     {
-        public TranslatorEntities()
-            : base("name=TranslatorEntities")
+        public TranslatorDBEntities()
+            : base("name=TranslatorDBEntities")
         {
         }
     
@@ -26,5 +26,6 @@ namespace WebApplication4
         }
     
         public virtual DbSet<tblCustomer> tblCustomers { get; set; }
+        public virtual DbSet<tblHistory> tblHistories { get; set; }
     }
 }

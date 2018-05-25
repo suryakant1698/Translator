@@ -22,7 +22,7 @@ namespace WebApplication4.Models
 
         public bool VerifyUser(Login user)
         {
-            using (TranslatorEntities db = new TranslatorEntities())
+            using (TranslatorDBEntities db = new TranslatorDBEntities())
             {
                 var userCredential = db.tblCustomers.Where(a=>a.Email==user.Email).FirstOrDefault();
                 if (userCredential == null)

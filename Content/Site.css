@@ -8,7 +8,15 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+.textboxes{
+    width:50%;
+}
+.loginPage{
+    
+}
+.loginDiv{
 
+}
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

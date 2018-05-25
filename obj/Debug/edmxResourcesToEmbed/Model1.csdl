@@ -14,8 +14,38 @@
     <Property Name="ResetPassworCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="ImageType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblHistories" Relationship="Self.FK__tblHistor__UserI__0425A276" FromRole="tblCustomers" ToRole="tblHistory" />
   </EntityType>
-  <EntityContainer Name="TranslatorEntities" annotation:LazyLoadingEnabled="true">
+  <EntityType Name="tblHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="SourceLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SourceText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DestinationLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DestinationText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="tblCustomer" Relationship="Self.FK__tblHistor__UserI__0425A276" FromRole="tblHistory" ToRole="tblCustomers" />
+  </EntityType>
+  <Association Name="FK__tblHistor__UserI__0425A276">
+    <End Role="tblCustomers" Type="Self.tblCustomer" Multiplicity="0..1" />
+    <End Role="tblHistory" Type="Self.tblHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCustomers">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblHistory">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TranslatorDBEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="tblCustomers" EntityType="Self.tblCustomer" />
+    <EntitySet Name="tblHistories" EntityType="Self.tblHistory" />
+    <AssociationSet Name="FK__tblHistor__UserI__0425A276" Association="Self.FK__tblHistor__UserI__0425A276">
+      <End Role="tblCustomers" EntitySet="tblCustomers" />
+      <End Role="tblHistory" EntitySet="tblHistories" />
+    </AssociationSet>
   </EntityContainer>
 </Schema>

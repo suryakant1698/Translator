@@ -15,7 +15,35 @@
     <Property Name="ImageData" Type="varbinary(max)" />
     <Property Name="ImageType" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="tblHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="SourceLanguage" Type="nvarchar(max)" />
+    <Property Name="SourceText" Type="nvarchar(max)" />
+    <Property Name="DestinationLanguage" Type="nvarchar(max)" />
+    <Property Name="DestinationText" Type="nvarchar(max)" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__tblHistor__UserI__0425A276">
+    <End Role="tblCustomers" Type="Self.tblCustomers" Multiplicity="0..1" />
+    <End Role="tblHistory" Type="Self.tblHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCustomers">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblHistory">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="TranslatorModelStoreContainer">
     <EntitySet Name="tblCustomers" EntityType="Self.tblCustomers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblHistory" EntityType="Self.tblHistory" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tblHistor__UserI__0425A276" Association="Self.FK__tblHistor__UserI__0425A276">
+      <End Role="tblCustomers" EntitySet="tblCustomers" />
+      <End Role="tblHistory" EntitySet="tblHistory" />
+    </AssociationSet>
   </EntityContainer>
 </Schema>
